@@ -1,0 +1,128 @@
+:root{
+    --green: #43A533;
+    --bg: #f2fffd
+}
+body{
+    background-color: #f5fdff;
+}
+
+main{
+    margin: 0 auto;
+    width: 400px;
+}
+h1{
+    font-family: 'Arvo';
+    font-size: 2.5em;
+    margin: 0;
+}
+h2{
+    font-family: 'Arvo';
+    font-size: 1.5em;
+    margin: 0;
+}
+h3{
+    font-size: 0.75em;
+    font-family: 'Poppins';
+    color: gray
+}
+h4{
+    font-size: 1em;
+    font-family: 'Arvo';
+    color: gray
+}
+p{
+    font-family: 'Poppins';
+}
+.card{
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+.card-content{
+    padding: 15px;
+}
+.card-img{
+    width: 50%;
+    height: 210px;
+}
+.indicator{
+    background-color: gray;
+    border-radius: 7px;
+    padding: 5px;
+}
+.indicators{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding: 10px 10px 0 0;
+}
+.icon {
+    display: block;
+}
+button{
+    padding: 15px 45px 15px 45px;
+    font-size: 1em;
+    border-style: none;
+    border-radius: 15px;
+    color: white;
+    background-color: var(--green);
+    font-family: 'Poppins';
+    transition-duration: 100ms;
+}
+button:hover{
+    transform: scale(1.05);
+    transition-duration: 200ms;
+}
+button:active{
+    transform: scale(0.95)
+}
+.btn-sm{
+    padding: 15px 15px 15px 15px;
+}
+.row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+.modal{
+    background-color: white;
+    display: block;
+    padding: 20px;
+    position: absolute;
+    margin-left: auto; 
+    margin-right: auto;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 400px;
+    height: 600px;
+    z-index: 5;
+    box-shadow: 0 0 50px 500px rgba(0,0,0,0.4);
+}
+
+/* COLORS */
+
+.critical{
+    background-color: #A53733;
+    color: #A53733;
+}
+.bad{
+    background-color: #a57233;
+    color: #a57233;
+}
+.okay{
+    background-color: #9da533;
+    color: #9da533;
+}
+.good{
+    background-color: #70a533;
+    color: #70a533;
+}
+.nominal{
+    background-color: var(--green);
+    color: var(--green);
+}

@@ -1,1 +1,82 @@
-<p>Hej!</p>
+<!DOCTYPE html>
+<html lang=sv-se>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="/style.css" type="text/css">
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"> 
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+    <link href="https://fonts.googleapis.com/css2?family=Arvo&family=Poppins&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com"> 
+  </head>
+  <body>
+      <!-- Possibly <nav> -->
+      <main>
+        <div class="row">
+          <h1>Overview</h1>
+            <button class="btn-sm">
+              <img src="refresh.svg" class="icon" id="refresh">
+            </button>
+        </div>
+
+        <div class="card" id="monster">
+          <img class="card-img" src="monster.jpeg">
+          <div class="card-content">
+            <h2>Monster</h2>
+            
+            <div class="indicators">
+              <div class="indicator light">
+                <img class="icon" src="light.svg">
+              </div>
+
+              <div class="indicator water">
+                <img class="icon" src="water.svg">
+              </div>
+
+              <div class="indicator moist">
+                <img class="icon" src="moist.svg">
+              </div>
+
+              <div class="indicator temp">
+                <img class="icon" src="temp.svg">
+              </div>
+            </div>
+
+            <h3>Is feeling well!</h3>
+
+            <button id="btn1">
+              See more
+            </button>
+          </div>
+        </div>
+
+        <div class="row">
+          <h4>Add more</h4>
+        </div>
+
+        <div class="modal card">
+          <div class="row">
+            <h1>Monster</h1>
+            <button class="btn-sm" id="modal-close">
+              <img src="close.svg" class="icon">
+            </button>
+          </div>
+          
+          <h2>Light</h2>
+          <p>Is doing fine.</p>
+          <h2>Water</h2>
+          <p>Is doing fine.</p>
+          <h2>Humidity</h2>
+          <p>Is doing fine.</p>
+          <h2>Temperature</h2>
+          <p>Is doing fine.</p>
+        </div>
+
+      </main>
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+      <script src="script.js"></script>
+  </body>
+</html>
