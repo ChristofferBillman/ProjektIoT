@@ -1,4 +1,4 @@
-const levels = ['critical', 'bad', 'medium', 'good', 'nominal']
+const levels = ['critical', 'bad', 'okay', 'good', 'nominal']
 
 const newData = {
     light: 'critical',
@@ -9,10 +9,7 @@ const newData = {
 
 const monsterPlant = document.getElementById('monster')
 
-document.getElementById('refresh').addEventListener('click', e => {
-    console.log('clicked')
-    // Code that fetches new data from server (RPi)
-})
+updateStats(monsterPlant,newData)
 
 document.getElementById('btn1').addEventListener('click', e =>{
     document.getElementsByClassName('modal')[0].style.display = 'block'
@@ -22,12 +19,12 @@ document.getElementById('modal-close').addEventListener('click', e => {
     document.getElementsByClassName('modal')[0].style.display = 'none'
 })
 
-/*
-axios.get('/indications')
+document.getElementById('refresh-button').addEventListener('click', () => {
+    axios.get('/data')
     .then(res =>{
-        light.classList.add('critical')
+        console.log('Value of data:' + res.data.OK)
     })
-*/
+})
 
 /* Uppdates the indicators on the given plant. */
 function updateStats(plant,data){
@@ -54,6 +51,6 @@ function turnOffIndicator(el){
     })
 }
 
-updateStats(monsterPlant,newData)
+//updateStats(monsterPlant,newData)
 
 
