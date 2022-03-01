@@ -1,0 +1,23 @@
+{
+	"chinese_money_plant": {
+		"daysdry": 1,
+		"wateramount": 60,
+		"temperature": [10,25],
+		"light": "shady",
+		"airmoist": [20,100],
+	},
+	"fiddle_leaf_fig": {
+		"daysdry": 1,
+		"wateramount": 60,
+		"temperature": [20,30],
+		"light": "sunny",
+		"airmoist": [60,100],
+	},
+	"cacti": {
+		"daysdry": 10,
+		"wateramount": 70,
+		"temperature": [10,25],
+		"light": "sunny",
+		"airmoist": [40,80],
+	}
+}

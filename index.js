@@ -7,7 +7,7 @@ const mqtt = require('mqtt')
 const client = mqtt.connect('mqtt://localhost:1883')
 
 const app = express()
-const port = 80
+const port = 3000
 
 let currentTemp = 0
 
@@ -36,10 +36,10 @@ client.subscribe('moisture/#')
 client.subscribe('light/#')
 
 handleAvgTemp(13)
-handleMoistureAirAvg(20)
 
 client.on('connect', () =>{
 	console.log("Someone connected!")
+	waterPlant(10)
 })
 
 client.on('message',(topic, msg, packet) => {
@@ -60,31 +60,42 @@ client.on('message',(topic, msg, packet) => {
 		case 'moisture/soil/avg':
 			handleMoistureSoilAvg(msg)
 			break;
-		case 'mositure/soil/watered':
+		case 'moisture/soil/watered':
 			handleSoilWatered(msg)
 			break;
+		case 'moisture/soil/current':
+			handleCurrentSoilMoist(msg)
+			break;	
 		}
+	console.log('Got message on topic ' + topic + ' with content ' + msg)
 });
 
 /* Saves average temp in array. Last 7 days saved.*/
 function handleAvgTemp(msg){
-	logData(msg,'tempdata.json');
+	logData(msg,'airtemp');
 }
 function handleCurrentTemp(msg){
 	/* Spara i variabel & Displaya current temp */
 	currentTemp = JSON.parse(msg)
 }
 function handleMoistureAirAvg(msg){
-	logData(msg,'airMoistureData.json');
+	logData(msg,'airmoist');
 }
 function handleLightAvg(msg){
-	logData(msg,'lightData.json')
+	logData(msg,'light')
 }
 function handleMoistureSoilAvg(msg) {
 
 }
 function handleSoilWatered(msg){
-	console.log('Nu är det färdigvattnat!')
+	let d = new Date()
+	if(JSON.parse(msg)){
+		logData('','lastwatered')
+		console.log('Vattnat klart kl ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds())
+	}
+}
+function handleCurrentSoilMoist(msg) {
+	
 }
 /**
  * 
@@ -93,11 +104,9 @@ function handleSoilWatered(msg){
 function waterPlant(amount){
 	let seconds = (amount / 39) * 60
 	
-	client.publish('/moisture/soil/startpump', seconds.toString())
+	client.publish('moisture/soil/startpump', seconds.toString())
 	console.log('Skickar att ESP ska vattna!')
 }
-
-waterPlant(10)
 
 /**
  * Logs the given data to a JSON-file.
@@ -105,23 +114,27 @@ waterPlant(10)
  * @param {*} msg 
  * @param {*} filename 
  */
-function logData(msg,filename){
+function logData(msg, topic){
 
-	filepath = './data/' + filename
+	filepath = './data/data.json'
 
 	fs.readFile(filepath, 'utf8', (err,data) =>{
-		let dataArr = JSON.parse(data);
+		save = JSON.parse(data);
 		
-		if(dataArr.length > 6){
-			dataArr.shift()
+		if(topic === 'lastwatered'){
+			save[topic] = Date.now()
+		}
+		else{
+			if(save[topic].length > 6){
+			save[topic].shift()
+			}
+			save[topic].push(JSON.parse(msg))
 		}
 		
-		dataArr.push(JSON.parse(msg));
-		
-		fs.writeFile(filepath, JSON.stringify(dataArr), 'utf8',
+		fs.writeFile(filepath, JSON.stringify(save), 'utf8',
 		 err =>{ 
 			if(err) console.log(err) 
-			else console.log('Success')
+			else console.log('Wrote to data file successfully.')
 			}
 		 )	
 	})
