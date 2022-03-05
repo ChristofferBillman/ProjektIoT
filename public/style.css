@@ -4,11 +4,13 @@
 }
 body{
     background-color: #f5fdff;
+    overflow-y: hidden;
 }
 
 main{
     margin: 0 auto;
-    width: 400px;
+    width: 90%;
+    max-width: 400px;
 }
 h1{
     font-family: 'Arvo';
@@ -42,6 +44,9 @@ p{
 }
 .card-content{
     padding: 15px;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
 }
 .card-img{
     width: 50%;
@@ -52,6 +57,7 @@ p{
     border-radius: 7px;
     padding: 5px;
 }
+/* Container for indicator */
 .indicators{
     display: flex;
     flex-direction: row;
@@ -88,11 +94,17 @@ select {
 #plant-selector{
     justify-content: flex-start;
 }
+/* The button that changes plant. Says 'Apply'*/
 #changeplant{
     padding: 10px;
     padding-left: 20px;
     padding-right: 20px;
     margin-left: 10px;
+}
+/* Container for the overview title and reload button. */
+#titlebar{
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 button:hover{
@@ -113,9 +125,9 @@ button:active{
 }
 .modal{
     background-color: white;
-    display: block;
+    display: none;
     padding: 20px;
-    position: absolute;
+    position: fixed;
     margin-left: auto; 
     margin-right: auto;
     left: 50%;
@@ -126,6 +138,19 @@ button:active{
     z-index: 5;
     box-shadow: 0 0 50px 2000px rgba(0,0,0,0.4);
 }
+
+@media only screen and (max-width: 600px) {
+    .card{
+        flex-direction: column;
+    }
+    .card-img{
+        width: 100%;
+    }
+    .modal{
+        width: 80%;
+        height: fit-content;
+    }
+  }
 
 /* COLORS */
 .err-text{
