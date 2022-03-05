@@ -2,22 +2,22 @@
 	"chinese_money_plant": {
 		"daysdry": 1,
 		"wateramount": 60,
-		"temperature": [10,25],
-		"light": "shady",
-		"airmoist": [20,100],
+		"airtemp": [10,25],
+		"light": [1500,3500],
+		"airmoist": [20,100]
 	},
 	"fiddle_leaf_fig": {
 		"daysdry": 1,
 		"wateramount": 60,
-		"temperature": [20,30],
-		"light": "sunny",
-		"airmoist": [60,100],
+		"airtemp": [20,30],
+		"light": [3500, 4095],
+		"airmoist": [60,100]
 	},
 	"cacti": {
-		"daysdry": 10,
+		"daysdry": 7,
 		"wateramount": 70,
-		"temperature": [10,25],
-		"light": "sunny",
-		"airmoist": [40,80],
+		"airtemp": [10,25],
+		"light": [3500, 4095],
+		"airmoist": [40,80]
 	}
 }

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Portfolio</title>
+    <title>Flower Power</title>
     <link rel="stylesheet" href="./style.css" type="text/css">
 
     <!-- Google fonts -->
@@ -45,7 +45,7 @@
               </div>
             </div>
 
-            <h3>Is feeling well!</h3>
+            <h3 class="indicator-text">Is feeling well!</h3>
 
             <button id="btn1">
               See more
@@ -64,15 +64,26 @@
               <img src="close.svg" class="icon">
             </button>
           </div>
+          <div>
+              <div class="row" id="plant-selector">
+              <select name="plant" id="plant-picker">
+                <option value="chinese_money_plant">Chinese Money Plant</option>
+                <option value="fiddle_leaf_fig">Fiddle Leaf Fig</option>
+                <option value="cacti">Cacti</option>
+              </select>
+              <button id="changeplant">Apply</button>
+            </div>
+            <p id="confirmation"></p>
+          </div>
           
           <h2>Light</h2>
-          <p>Is doing fine.</p>
+          <p class="light-text">Is doing fine.</p>
           <h2>Water</h2>
           <p>Is doing fine.</p>
           <h2>Humidity</h2>
-          <p>Is doing fine.</p>
+          <p class="moist-text">Is doing fine.</p>
           <h2>Temperature</h2>
-          <p>Is doing fine.</p>
+          <p class="temp-text">Is doing fine.</p>
         </div>
 
       </main>

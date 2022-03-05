@@ -10,6 +10,8 @@ const app = express()
 const port = 3000
 
 let currentTemp = 0
+const tooDry = 20
+const wateringAmount = 200 //In ml
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -24,10 +26,15 @@ app.get('/', (req, res) => {
 	/*eRsten sköts handleCurrentTemp()*/
 	res.sendFile(path.resolve(__dirname + '/public/index.html'))
 })
+app.post('/switchplant', (req,res) =>{
+	logData(req.body.plant, 'planttype')
+	res.sendFile(path.resolve(__dirname + '/public/index.html'))
+})
 
 app.get('/data', (req, res) => {
 	res.send({
-		OK: true
+		data: getData('data.json'),
+		flowers: getData('flowers.json')
 	})
 })
 
@@ -85,17 +92,40 @@ function handleLightAvg(msg){
 	logData(msg,'light')
 }
 function handleMoistureSoilAvg(msg) {
+	let plantData = JSON.parse(getData('flowers.json'))
+	let plant = JSON.parse(getData('data.json'))
 
+	if(msg < tooDry){
+		let maxDaysDry = plantData[plant.planttype].daysdry
+
+		let daysDry = 0
+		for(let i = 6; i >= maxDaysDry; i--){
+			let soilMoist = plantData[plant.planttype].soilmoist[i]
+			if(soilMoist < tooDry){
+				daysDry++
+			}
+		}
+		if(daysDry >= maxDaysDry){
+			waterPlant(wateringAmount)
+		}
+	}
+	logData(msg,'soilmoist')
 }
 function handleSoilWatered(msg){
 	let d = new Date()
 	if(JSON.parse(msg)){
 		logData('','lastwatered')
 		console.log('Vattnat klart kl ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds())
+		setTimeout(checkSoilMoist, 60 * 60 * 1000)
 	}
 }
+function checkSoilMoist() {
+	client.publish('moisture/soil/current/request', 'true')
+}
 function handleCurrentSoilMoist(msg) {
-	
+	if(JSON.parse(msg) < tooDry){
+		waterPlant(wateringAmount)
+	}
 }
 /**
  * 
@@ -108,6 +138,10 @@ function waterPlant(amount){
 	console.log('Skickar att ESP ska vattna!')
 }
 
+function getData(filename){
+	filepath = './data/' + filename
+	return fs.readFileSync(filepath, 'utf8')
+}
 /**
  * Logs the given data to a JSON-file.
  * NOTE: Saves MAX 7 datapoints. The last datapoint will be removed when given new data.
@@ -123,6 +157,9 @@ function logData(msg, topic){
 		
 		if(topic === 'lastwatered'){
 			save[topic] = Date.now()
+		}
+		if(topic === 'planttype'){
+			save[topic] = msg
 		}
 		else{
 			if(save[topic].length > 6){

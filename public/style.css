@@ -45,7 +45,7 @@ p{
 }
 .card-img{
     width: 50%;
-    height: 210px;
+    object-fit: cover;
 }
 .indicator{
     background-color: gray;
@@ -71,6 +71,30 @@ button{
     font-family: 'Poppins';
     transition-duration: 100ms;
 }
+select {
+    appearance: none;
+    padding: 0px;
+    border-radius: 15px;
+    border-style: none;
+    color: var(--green);
+    font-size: 1em;
+    background: url(./open.svg) 96% / 15% no-repeat rgb(226, 247, 247);
+    -webkit-appearance: none;
+    cursor: pointer;
+    padding: 15px;
+    padding-right: 50px;
+    width: fit-content;
+}
+#plant-selector{
+    justify-content: flex-start;
+}
+#changeplant{
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: 10px;
+}
+
 button:hover{
     transform: scale(1.05);
     transition-duration: 200ms;
@@ -86,11 +110,10 @@ button:active{
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
 }
 .modal{
     background-color: white;
-    display: none;
+    display: block;
     padding: 20px;
     position: absolute;
     margin-left: auto; 
@@ -101,12 +124,24 @@ button:active{
     width: 400px;
     height: 600px;
     z-index: 5;
-    box-shadow: 0 0 50px 500px rgba(0,0,0,0.4);
+    box-shadow: 0 0 50px 2000px rgba(0,0,0,0.4);
 }
 
 /* COLORS */
+.err-text{
+    color: #A53733;
+    transition-duration: 200ms;
+}
+.success-text{
+    color: var(--green);
+    transition-duration: 200ms;
+}
 
-.critical{
+.low{
+    background-color: #A53733;
+    color: #A53733;
+}
+.high{
     background-color: #A53733;
     color: #A53733;
 }
@@ -114,15 +149,15 @@ button:active{
     background-color: #a57233;
     color: #a57233;
 }
-.okay{
+.bldfjlsdkfj{
     background-color: #9da533;
     color: #9da533;
 }
-.good{
+.usch{
     background-color: #70a533;
     color: #70a533;
 }
-.nominal{
+.good{
     background-color: var(--green);
     color: var(--green);
 }
