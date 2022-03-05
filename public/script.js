@@ -1,25 +1,19 @@
 const levels = ['low', 'good', 'high']
 
-const newData = {
-    light: 'critical',
-    water: 'bad',
-    moist: 'okay',
-    temp: 'nominal'
-}
-
 let serverData
 let plantInfo
 
 const monsterPlant = document.getElementById('monster')
 
-fetchData()
-//updateStats(monsterPlant,newData)
+// Get data from server initially.
+update()
 
-function fetchData(){
+function update(){
+    // Request data from server.
     axios.get('/data')
-    .then(res =>{
-        serverData = JSON.parse(res.data.data)
-        plantInfo= JSON.parse(res.data.flowers)
+    .then(response =>{
+        serverData = JSON.parse(response.data.data)
+        plantInfo= JSON.parse(response.data.flowers)
         
         let picker = document.getElementById('plant-picker')
         
@@ -33,10 +27,8 @@ function fetchData(){
         translateData()
     })
 }
-
-const average = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
     
-function changeText(indication, topic,el){
+function changeText(indication, topic, el){
     el.innerHTML = 'The ' + topic + ' level is ' + indication + '!'
     return indication === 'good'
 }
@@ -69,8 +61,10 @@ function translateData(){
 function setStatus(topic, data){
 
     if(serverData[topic].length === 7){
+        // Avg of the measured values.
         let avg = average(serverData[topic])
 
+        // Deciding the topics' status depending on this plants threshold.
         if(avg > plantInfo[serverData.planttype][topic][1]) {
             data[topic] = 'high'
         }
@@ -83,26 +77,36 @@ function setStatus(topic, data){
     }
 }
 
+// Open modal
 document.getElementById('btn1').addEventListener('click', e =>{
     document.getElementsByClassName('modal')[0].style.display = 'block'
+    //disableBodyScroll()
 })
 
+// Close modal
 document.getElementById('modal-close').addEventListener('click', e => {
     document.getElementsByClassName('modal')[0].style.display = 'none'
+    //enableBodyScroll()
 })
 
+// Refresh button
 document.getElementById('refresh-button').addEventListener('click', () => {
-    fetchData()
+    update()
 })
 
+// 'Apply' button to change plant type.
 document.getElementById('changeplant').addEventListener('click', e => {
-    console.log(document.getElementById('plant-picker').value)
-    axios.post('/switchplant',document.getElementById('plant-picker').value)
-        .then(res =>{
+    
+    // Send selection to server, to /switchplant.
+    axios.post('/switchplant',{planttype: document.getElementById('plant-picker').value})
+        // If successful:
+        .then(response =>{
             document.getElementById('confirmation').innerHTML = "Successfully changed plant."
             document.getElementById('confirmation').classList.remove('err-text')
             document.getElementById('confirmation').classList.add('success-text')
+            update()
         })
+        // If unsuccessful:
         .catch(err =>{
             document.getElementById('confirmation').innerHTML = "Plant was not changed. Try again later."
             document.getElementById('confirmation').classList.remove('success-text')
@@ -135,6 +139,19 @@ function turnOffIndicator(el){
     })
 }
 
-let plantpicker = document.getElementById('plant-picker')
+function disableBodyScroll(){
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${window.scrollY}px`;
+}
+function enableBodyScroll(){
+    const scrollY = document.body.style.top;
+    document.body.style.position = '';
+    document.body.style.top = '';
+    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+}
+
+function average(arr) {
+    return arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
+}
 
 

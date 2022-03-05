@@ -27,7 +27,8 @@ app.get('/', (req, res) => {
 	res.sendFile(path.resolve(__dirname + '/public/index.html'))
 })
 app.post('/switchplant', (req,res) =>{
-	logData(req.body.plant, 'planttype')
+	console.log(req.body)
+	logData(req.body.planttype, 'planttype')
 	res.sendFile(path.resolve(__dirname + '/public/index.html'))
 })
 
@@ -159,6 +160,7 @@ function logData(msg, topic){
 			save[topic] = Date.now()
 		}
 		if(topic === 'planttype'){
+			console.log(save[topic])
 			save[topic] = msg
 		}
 		else{
