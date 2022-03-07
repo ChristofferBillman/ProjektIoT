@@ -2,6 +2,14 @@
     --green: #43A533;
     --bg: #f2fffd
 }
+@font-face {
+    font-family: 'Arvo';
+    src: url('./Arvo/Arvo-Regular.ttf'); 
+  }
+  @font-face {
+    font-family: 'Poppins';
+    src: url('./Poppins/Poppins-Regular.ttf'); 
+}
 body{
     background-color: #f5fdff;
     overflow-y: hidden;
