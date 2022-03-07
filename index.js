@@ -29,7 +29,11 @@ app.get('/', (req, res) => {
 app.post('/switchplant', (req,res) =>{
 	console.log(req.body)
 	logData(req.body.planttype, 'planttype')
-	res.sendFile(path.resolve(__dirname + '/public/index.html'))
+})
+app.post('/waterplant', (req,res) =>{
+	console.log(req.body)
+	console.log('watering ' + parseInt(req.body.amount) + ' ml')
+	waterPlantManual(parseInt(req.body.amount))
 })
 
 app.get('/data', (req, res) => {
@@ -37,6 +41,13 @@ app.get('/data', (req, res) => {
 		data: getData('data.json'),
 		flowers: getData('flowers.json')
 	})
+})
+
+app.get('/currenttemp', (req,res) =>{
+	client.publish('temp/current/request','true')
+		res.send({
+			currenttemp: currentTemp
+		})
 })
 
 client.subscribe('temp/#');
@@ -55,6 +66,7 @@ client.on('message',(topic, msg, packet) => {
 			break;
 		case 'temp/current':
 			handleCurrentTemp(msg)
+
 			break;
 		case 'moisture/air/avg':
 			handleMoistureAirAvg(msg)
@@ -112,9 +124,11 @@ function handleMoistureSoilAvg(msg) {
 }
 function handleSoilWatered(msg){
 	let d = new Date()
-	if(JSON.parse(msg)){
-		logData('','lastwatered')
-		console.log('Vattnat klart kl ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds())
+
+	logData('','lastwatered')
+	console.log('Vattnat klart kl ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds())
+
+	if(msg){
 		setTimeout(checkSoilMoist, 5 * 60 * 1000)
 	}
 }
@@ -135,6 +149,12 @@ function waterPlant(amount){
 	
 	client.publish('moisture/soil/startpump', seconds.toString())
 	console.log('Skickar att ESP ska vattna!')
+}
+function waterPlantManual(amount){
+	let seconds = (amount / 39) * 60
+	
+	client.publish('manualcontrol/startpump', seconds.toString())
+	console.log('En användare vattnar själv!!!')
 }
 
 function getData(filename){

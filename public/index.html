@@ -17,9 +17,9 @@
         </div>
 
         <div class="card" id="monster">
-          <img class="card-img" src="monster.jpeg">
+          <img class="card-img" src="plant.png">
           <div class="card-content">
-            <h2>Monster</h2>
+            <h2>Lab Plant</h2>
             
             <div class="indicators">
               <div class="indicator light">
@@ -39,7 +39,7 @@
               </div>
             </div>
 
-            <h3 class="indicator-text">Is feeling well!</h3>
+            <h3 class="indicator-text">Could not load data.</h3>
 
             <button id="btn1">
               See more
@@ -53,7 +53,7 @@
 
         <div class="modal card">
           <div class="row">
-            <h1>Monster</h1>
+            <h1>Lab Plant</h1>
             <button class="btn-sm" id="modal-close">
               <img src="close.svg" class="icon">
             </button>
@@ -71,14 +71,75 @@
           </div>
           
           <h2>Light</h2>
-          <p class="light-text">Is doing fine.</p>
+          <p class="light-text">Could not load data.</p>
+
+          <div class="row">
+            <div class="light-container" id="light1">
+              <h3>...</h3>
+              <img src="half.png" class="icon">
+            </div>
+
+            <div class="light-container" id="light2">
+              <h3>...</h3>
+              <img src="half.png" class="icon">
+            </div>
+
+            <div class="light-container" id="light3">
+              <h3>...</h3>
+              <img src="half.png" class="icon">
+            </div>
+
+            <div class="light-container" id="light4">
+              <h3>...</h3>
+              <img src="half.png" class="icon">
+            </div>
+
+            <div class="light-container" id="light5">
+              <h3>...</h3>
+              <img src="half.png" class="icon">
+            </div>
+
+            <div class="light-container" id="light6">
+              <h3>...</h3>
+              <img src="half.png" class="icon">
+            </div>
+
+            <div class="light-container" id="light7">
+              <h3>...</h3>
+              <img src="half.png" class="icon">
+            </div>
+
+          </div>
           <h2>Water</h2>
-          <p>Is doing fine.</p>
+
+          <div class="row" id="watering">
+            <select name="plant" id="water-picker">
+              <option value="2">2 ml</option>
+              <option value="10">10 ml</option>
+              <option value="20">20 ml</option>
+            </select>
+            <button id="waterplant">Water plant</button>
+          </div>
+
+          <h3 id="lastwatered">Last watered: </h3>
+
           <h2>Humidity</h2>
-          <p class="moist-text">Is doing fine.</p>
+          <p class="moist-text">Could not load data.</p>
+
+          <p>Rolling weekly average: </p>
+          <p id="weekavgmoist"></p>
+
           <h2>Temperature</h2>
-          <p class="temp-text">Is doing fine.</p>
+
+          <p>Current temperature: </p>
+          <p id="currenttemp"></p>
+          <p>Rolling week average: </p>
+          <p id="weekavgtemp"></p>
+
+          <p class="temp-text">Could not load data.</p>
+
         </div>
+      </div>
 
       </main>
       <script src="./axios.min.js"></script>

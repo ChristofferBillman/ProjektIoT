@@ -25,10 +25,30 @@ function update(){
             }
         }
         translateData()
+
+        let currenttemp = document.getElementById('currenttemp')
+        let weekavg = document.getElementById('weekavgtemp')
+
+        axios.get('/currenttemp')
+            .then(res =>{
+                console.log(res.data.currenttemp)
+                currenttemp.innerHTML = res.data.currenttemp
+            })
+        weekavg.innerHTML = average(serverData.airtemp)
+
+        let lastwatered = document.getElementById('lastwatered')
+        let date = new Date(serverData.lastwatered)
+        console.log(serverData.lastwatered)
+
+        lastwatered.innerHTML = 'Last watered: ' + date.getDate() + ' ' + getMonthString(date.getMonth()) + ' ' + date.getFullYear() + ', ' + date.getHours() + ':' + date.getMinutes()
+
+        let weekavgmoist = document.getElementById('weekavgmoist')
+        weekavgmoist.innerHTML = average(serverData.airmoist)
     })
 }
     
 function changeText(indication, topic, el){
+    console.log('Indication: ' + indication + '. Topic: ' + topic)
     el.innerHTML = 'The ' + topic + ' level is ' + indication + '!'
     return indication === 'good'
 }
@@ -41,21 +61,29 @@ function translateData(){
     setStatus('airtemp', indicatorStatus)
     setStatus('light', indicatorStatus)
 
+    console.log(indicatorStatus)
+
     let lightText = document.getElementsByClassName('light-text')[0]
     let indicatorText = document.getElementsByClassName('indicator-text')[0]
     let moistText = document.getElementsByClassName('moist-text')[0]
     let tempText = document.getElementsByClassName('temp-text')[0]
 
+    let goodStatus = []
+    goodStatus[0] = changeText(indicatorStatus.light,'light',lightText)
+    goodStatus[1] = changeText(indicatorStatus.airmoist,'moisture',moistText)
+    goodStatus[2] = changeText(indicatorStatus.airtemp,'air temperature',tempText)
+
     if(
-        !changeText(indicatorStatus.light,'light',lightText) ||
-        !changeText(indicatorStatus.airmoist,'moisture',moistText) ||
-        !changeText(indicatorStatus.airtemp,'air temperature',tempText)
+        !goodStatus[0] ||
+        !goodStatus[1] ||
+        !goodStatus[2]
     ){
         indicatorText.innerHTML = 'Your plant needs attention.'
     }
     else{
         indicatorText.innerHTML = 'Your plant is doing well!'
     }
+    setLights()
     updateStats(monsterPlant,indicatorStatus)
 }
 function setStatus(topic, data){
@@ -94,6 +122,27 @@ document.getElementById('refresh-button').addEventListener('click', () => {
     update()
 })
 
+document.getElementById('waterplant').addEventListener('click', () =>{
+    let amount = document.getElementById('water-picker').value
+    console.log("vattnar " + amount + ' ml')
+    axios.post('/waterplant', {amount: amount})
+        .then(res =>{
+            document.getElementById('waterplant').style.backgroundColor = '#555'
+            console.log('hej')
+        })
+        .catch(err =>{
+            // Om det inte funkar
+        })
+    document.getElementById('waterplant').disabled = true
+    document.getElementById('waterplant').innerHTML = 'Watering...'
+
+    setTimeout(() =>{
+        document.getElementById('waterplant').disabled = false
+        document.getElementById('waterplant').innerHTML = 'Water plant'
+        update()
+    },((amount / 39) * 60*1000)+2000)
+})
+
 // 'Apply' button to change plant type.
 document.getElementById('changeplant').addEventListener('click', e => {
     
@@ -128,7 +177,6 @@ function updateStats(plant,data){
     for (const [key, indicator] of Object.entries(indicators)) {
         turnOffIndicator(indicator)
         // Turn on the indicator with the color provided in data.
-        console.log(key)
         indicator.classList.add(data[key])
     }
 }
@@ -139,19 +187,34 @@ function turnOffIndicator(el){
     })
 }
 
-function disableBodyScroll(){
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${window.scrollY}px`;
-}
-function enableBodyScroll(){
-    const scrollY = document.body.style.top;
-    document.body.style.position = '';
-    document.body.style.top = '';
-    window.scrollTo(0, parseInt(scrollY || '0') * -1);
-}
-
 function average(arr) {
     return arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
+}
+
+function getMonthString(number){
+    months = ['Januari','Februari','Mars','April','Maj','Juni','Juli','Augusti','September','Oktober','November','December']
+    return months[number]
+}
+
+function setLights(){
+    let days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
+    let d = new Date()
+    let today = d.getDay()
+    for(let i = serverData.light.length; i > 0; i--){
+        let container = document.getElementById('light'+i)
+        if(i == serverData.light.length){
+            container.children[0].innerHTML = 'Today'
+        }
+        else if (i == serverData.light.length-1) {
+            container.children[0].innerHTML = 'Yest'
+        }
+        else{
+            container.children[0].innerHTML = days[today-1]
+         }
+        today--
+        if(today < 1) today = today + 7;
+    }
+    /*UPDATE ICON - TO DO NEXT SESSION*/
 }
 
 

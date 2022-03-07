@@ -114,6 +114,20 @@ select {
     margin-bottom: 20px;
     margin-top: 20px;
 }
+#currenttemp{
+    font-size: 2em;
+}
+#weekavgtemp{
+    font-size: 2em;
+}
+#weekavgmoist{
+    font-size: 2em;
+}
+.light-container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
 
 button:hover{
     transform: scale(1.05);
@@ -121,6 +135,9 @@ button:hover{
 }
 button:active{
     transform: scale(0.95)
+}
+button[disabled]{
+    background-color: #555;
 }
 .btn-sm{
     padding: 15px 15px 15px 15px;
@@ -142,7 +159,7 @@ button:active{
     top: 50%;
     transform: translate(-50%,-50%);
     width: 400px;
-    height: 600px;
+    height: fit-content;
     z-index: 5;
     box-shadow: 0 0 50px 2000px rgba(0,0,0,0.4);
 }
