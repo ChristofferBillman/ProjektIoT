@@ -10,8 +10,8 @@ const app = express()
 const port = 3000
 
 let currentTemp = 0
-const tooDry = 20
-const wateringAmount = 200 //In ml
+const tooDry = 50
+const wateringAmount = 150 //In ml
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -43,11 +43,8 @@ client.subscribe('temp/#');
 client.subscribe('moisture/#')
 client.subscribe('light/#')
 
-handleAvgTemp(13)
-
 client.on('connect', () =>{
 	console.log("Someone connected!")
-	waterPlant(10)
 })
 
 client.on('message',(topic, msg, packet) => {
@@ -100,8 +97,9 @@ function handleMoistureSoilAvg(msg) {
 		let maxDaysDry = plantData[plant.planttype].daysdry
 
 		let daysDry = 0
-		for(let i = 6; i >= maxDaysDry; i--){
-			let soilMoist = plantData[plant.planttype].soilmoist[i]
+		let length = plant.soilmoist.length
+		for(let i = length; i >= maxDaysDry; i--){
+			let soilMoist = plant.soilmoist[i]
 			if(soilMoist < tooDry){
 				daysDry++
 			}
@@ -117,7 +115,7 @@ function handleSoilWatered(msg){
 	if(JSON.parse(msg)){
 		logData('','lastwatered')
 		console.log('Vattnat klart kl ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds())
-		setTimeout(checkSoilMoist, 60 * 60 * 1000)
+		setTimeout(checkSoilMoist, 5 * 60 * 1000)
 	}
 }
 function checkSoilMoist() {
@@ -143,6 +141,7 @@ function getData(filename){
 	filepath = './data/' + filename
 	return fs.readFileSync(filepath, 'utf8')
 }
+
 /**
  * Logs the given data to a JSON-file.
  * NOTE: Saves MAX 7 datapoints. The last datapoint will be removed when given new data.
@@ -152,31 +151,29 @@ function getData(filename){
 function logData(msg, topic){
 
 	filepath = './data/data.json'
-
-	fs.readFile(filepath, 'utf8', (err,data) =>{
-		save = JSON.parse(data);
-		
-		if(topic === 'lastwatered'){
-			save[topic] = Date.now()
+	
+	let data = fs.readFileSync(filepath, 'utf8')
+	
+	save = JSON.parse(data);
+	console.log('topic: ' + topic)
+	console.log('message: ' + msg)
+	
+	if(topic === 'lastwatered'){
+		save[topic] = Date.now()
+	}
+	else if(topic === 'planttype'){
+		console.log(save[topic])
+		save[topic] = msg
+	}
+	else{
+		if(save[topic].length > 6){
+		save[topic].shift()
 		}
-		if(topic === 'planttype'){
-			console.log(save[topic])
-			save[topic] = msg
-		}
-		else{
-			if(save[topic].length > 6){
-			save[topic].shift()
-			}
-			save[topic].push(JSON.parse(msg))
-		}
-		
-		fs.writeFile(filepath, JSON.stringify(save), 'utf8',
-		 err =>{ 
-			if(err) console.log(err) 
-			else console.log('Wrote to data file successfully.')
-			}
-		 )	
-	})
+		save[topic].push(JSON.parse(msg))
+	}
+	
+	fs.writeFileSync(filepath, JSON.stringify(save), 'utf8')
+	console.log('Wrote to data file successfully.')
 }
 
 function getLogs(){

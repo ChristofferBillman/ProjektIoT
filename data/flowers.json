@@ -1,6 +1,6 @@
 {
 	"chinese_money_plant": {
-		"daysdry": 1,
+		"daysdry": 0,
 		"wateramount": 60,
 		"airtemp": [10,25],
 		"light": [1500,3500],
