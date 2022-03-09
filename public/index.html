@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="./style.css" type="text/css">
   </head>
   <body>
-      <!-- Possibly <nav> -->
       <main>
         <div class="row" id="titlebar">
           <h1>Overview</h1>
@@ -67,13 +66,13 @@
               </select>
               <button id="changeplant">Apply</button>
             </div>
-            <p id="confirmation"></p>
+            <h3 id="confirmation">Click 'Apply' to change this plants type.</h3>
           </div>
           
           <h2>Light</h2>
           <p class="light-text">Could not load data.</p>
 
-          <div class="row">
+          <div class="row row-bg" id="light-indicators-container">
             <div class="light-container" id="light1">
               <h3>...</h3>
               <img src="half.png" class="icon">
@@ -110,9 +109,43 @@
             </div>
 
           </div>
+
+          <h2>Humidity</h2>
+          <p class="moist-text">Could not load data.</p>
+          
+          <div class="row row-bg">
+            <p>Weekly avg</p>
+            <div class="row">
+              <p id="weekavgmoist"></p>
+              <p class="right-padd" id="weekavgmoist">%</p>
+            </div>
+          </div>
+
+          <h2>Temperature</h2>
+
+          <p class="temp-text">Could not load data.</p>
+
+          <div class="row row-bg">
+            <p>Now</p>
+              <div class="row">
+                <p id="currenttemp">...</p>
+                <p class="right-padd" id="currenttemp">°C</p>
+              </div>
+          </div>
+
+          <div class="row row-bg">
+            <p>Weekly avg</p>
+              <div class="row">
+                <p id="weekavgtemp"></p>
+                <p class="right-padd" id="weekavgtemp">°C</p>
+              </div>
+          </div>
+
           <h2>Water</h2>
 
-          <div class="row" id="watering">
+          <p id="lastwatered">Last watered: </p>
+
+          <div class="row row-bg" id="watering">
             <select name="plant" id="water-picker">
               <option value="2">2 ml</option>
               <option value="10">10 ml</option>
@@ -121,29 +154,12 @@
             <button id="waterplant">Water plant</button>
           </div>
 
-          <h3 id="lastwatered">Last watered: </h3>
-
-          <div class="row" id="refillwater">
+          <div class="row row-bg" id="refillwater">
             <p id="currentwaterlvl">...</p>
             <button id="waterrefill">
               Tank refilled
             </button>
           </div>
-
-          <h2>Humidity</h2>
-          <p class="moist-text">Could not load data.</p>
-
-          <p>Rolling weekly average: </p>
-          <p id="weekavgmoist"></p>
-
-          <h2>Temperature</h2>
-
-          <p>Current temperature: </p>
-          <p id="currenttemp"></p>
-          <p>Rolling week average: </p>
-          <p id="weekavgtemp"></p>
-
-          <p class="temp-text">Could not load data.</p>
 
         </div>
       </div>

@@ -1,6 +1,9 @@
 :root{
     --green: #43A533;
-    --bg: #f2fffd
+    --bg: #f2fffd;
+    --gray: rgb(241, 241, 241);
+    --black: rgb(60,60,60);
+    --info: rgb(55, 120, 173);
 }
 @font-face {
     font-family: 'Arvo';
@@ -23,11 +26,13 @@ h1{
     font-family: 'Arvo';
     font-size: 2.5em;
     margin: 0;
+    color: var(--black);
 }
 h2{
     font-family: 'Arvo';
     font-size: 1.5em;
-    margin: 0;
+    padding-top: 20px;
+    color: var(--black);
 }
 h3{
     font-size: 0.75em;
@@ -41,6 +46,7 @@ h4{
 }
 p{
     font-family: 'Poppins';
+    color: var(--black);
 }
 .card{
     border-radius: 20px;
@@ -74,6 +80,9 @@ p{
 .icon {
     display: block;
 }
+.vspace{
+    height: 30px;
+}
 button{
     padding: 15px 45px 15px 45px;
     font-size: 1em;
@@ -91,23 +100,20 @@ select {
     border-style: none;
     color: var(--green);
     font-size: 1em;
-    background: url(./open.svg) 96% / 15% no-repeat rgb(226, 247, 247);
+    background: url(./open.svg) 96% / 15% no-repeat var(--gray);
     -webkit-appearance: none;
     cursor: pointer;
     padding: 15px;
     padding-right: 50px;
     width: fit-content;
 }
-#plant-selector{
-    justify-content: flex-start;
-}
 /* The button that changes plant. Says 'Apply'*/
-#changeplant{
+/*#changeplant{
     padding: 10px;
     padding-left: 20px;
     padding-right: 20px;
     margin-left: 10px;
-}
+}*/
 /* Container for the overview title and reload button. */
 #titlebar{
     margin-bottom: 20px;
@@ -116,19 +122,25 @@ select {
 #currenttemp{
     font-size: 2em;
     margin: 0;
+    color: var(--info);
 }
 #weekavgtemp{
     font-size: 2em;
     margin: 0;
+    color: var(--info)
 }
 #weekavgmoist{
     font-size: 2em;
     margin: 0;
+    color: var(--info)
 }
 .light-container{
     display: flex;
     align-items: center;
     flex-direction: column;
+}
+#light-indicators-container{
+    padding-bottom: 25px;
 }
 
 button:hover{
@@ -149,10 +161,21 @@ button[disabled]{
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.row-bg{
+    background-color: var(--gray);
+    border-radius: 20px;
+    padding: 10px;
+    padding-left: 20px;
+}
+.right-padd{
+    padding-right: 10px;
 }
 .modal{
     background-color: white;
-    display: block;
+    display: none;
     overflow-y: scroll;
     padding: 20px;
     position: fixed;
@@ -162,7 +185,8 @@ button[disabled]{
     top: 50%;
     transform: translate(-50%,-50%);
     width: 400px;
-    height: 700px;
+    height: fit-content;
+    max-height: 90vh;
     z-index: 5;
     box-shadow: 0 0 50px 2000px rgba(0,0,0,0.4);
 }
@@ -177,6 +201,10 @@ button[disabled]{
     .modal{
         width: 80%;
         height: fit-content;
+    }
+    button{
+        padding-left: 10px;
+        padding-right: 10px;
     }
   }
 
