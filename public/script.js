@@ -44,6 +44,9 @@ function update(){
 
         let weekavgmoist = document.getElementById('weekavgmoist')
         weekavgmoist.innerHTML = average(serverData.airmoist)
+
+        let wateramounttext = document.getElementById('currentwaterlvl')
+        wateramounttext.innerHTML = serverData.wateramount + ' ml left'
     })
 }
     
@@ -61,8 +64,6 @@ function translateData(){
     setStatus('airtemp', indicatorStatus)
     setStatus('light', indicatorStatus)
 
-    console.log(indicatorStatus)
-
     let lightText = document.getElementsByClassName('light-text')[0]
     let indicatorText = document.getElementsByClassName('indicator-text')[0]
     let moistText = document.getElementsByClassName('moist-text')[0]
@@ -70,7 +71,7 @@ function translateData(){
 
     let goodStatus = []
     goodStatus[0] = changeText(indicatorStatus.light,'light',lightText)
-    goodStatus[1] = changeText(indicatorStatus.airmoist,'moisture',moistText)
+    goodStatus[1] = changeText(indicatorStatus.airmoist,'humidity',moistText)
     goodStatus[2] = changeText(indicatorStatus.airtemp,'air temperature',tempText)
 
     if(
@@ -84,6 +85,15 @@ function translateData(){
         indicatorText.innerHTML = 'Your plant is doing well!'
     }
     setLights()
+
+    if(serverData.wateramount < 50){
+        indicatorText.innerHTML += '<br><br> This tank needs to be refilled!'
+        indicatorStatus.wateramount = 'low'
+    }
+    else{
+        indicatorStatus.wateramount = 'good'
+    }
+    console.log(indicatorStatus)
     updateStats(monsterPlant,indicatorStatus)
 }
 function setStatus(topic, data){
@@ -140,16 +150,31 @@ document.getElementById('waterplant').addEventListener('click', () =>{
         document.getElementById('waterplant').disabled = false
         document.getElementById('waterplant').innerHTML = 'Water plant'
         update()
-    },((amount / 39) * 60*1000)+2000)
+    },((amount / 13.75) * 60*1000)+2000)
+})
+document.getElementById('waterrefill').addEventListener('click', () =>{
+    axios.post('/waterrefill',{refill: true})
+    .then(res =>{
+        // If success
+        update()
+        let wateramounttext = document.getElementById('currentwaterlvl')
+        wateramounttext.innerHTML = serverData.wateramount + ' ml left'
+    })
+    .catch(err =>{
+        // If fail
+    })
 })
 
 // 'Apply' button to change plant type.
 document.getElementById('changeplant').addEventListener('click', e => {
+
+    console.log("Button pressed")
     
     // Send selection to server, to /switchplant.
     axios.post('/switchplant',{planttype: document.getElementById('plant-picker').value})
         // If successful:
         .then(response =>{
+            console.log("Got response!!!")
             document.getElementById('confirmation').innerHTML = "Successfully changed plant."
             document.getElementById('confirmation').classList.remove('err-text')
             document.getElementById('confirmation').classList.add('success-text')
@@ -169,7 +194,7 @@ function updateStats(plant,data){
     // Get all indicators of this plant.
     const indicators = {
         light: plant.getElementsByClassName('light')[0],
-        water: plant.getElementsByClassName('water')[0],
+        wateramount: plant.getElementsByClassName('water')[0],
         airmoist: plant.getElementsByClassName('moist')[0],
         airtemp: plant.getElementsByClassName('temp')[0],
     }
@@ -213,6 +238,21 @@ function setLights(){
          }
         today--
         if(today < 1) today = today + 7;
+
+        let lightVal = serverData.light[i-1]
+
+        console.log(lightVal)
+
+        if(lightVal < 1500){
+            container.children[1].src = "./cloudy.svg"
+        } else if(lightVal < 2000){
+            container.children[1].src = "./half.png"
+            container.children[1].width = '24'
+            container.children[1].height = '24'
+        }
+        else {
+            container.children[1].src = "./blacklight.svg"
+        }
     }
     /*UPDATE ICON - TO DO NEXT SESSION*/
 }

@@ -12,7 +12,6 @@
 }
 body{
     background-color: #f5fdff;
-    overflow-y: hidden;
 }
 
 main{
@@ -116,12 +115,15 @@ select {
 }
 #currenttemp{
     font-size: 2em;
+    margin: 0;
 }
 #weekavgtemp{
     font-size: 2em;
+    margin: 0;
 }
 #weekavgmoist{
     font-size: 2em;
+    margin: 0;
 }
 .light-container{
     display: flex;
@@ -150,7 +152,8 @@ button[disabled]{
 }
 .modal{
     background-color: white;
-    display: none;
+    display: block;
+    overflow-y: scroll;
     padding: 20px;
     position: fixed;
     margin-left: auto; 
@@ -159,7 +162,7 @@ button[disabled]{
     top: 50%;
     transform: translate(-50%,-50%);
     width: 400px;
-    height: fit-content;
+    height: 700px;
     z-index: 5;
     box-shadow: 0 0 50px 2000px rgba(0,0,0,0.4);
 }
@@ -194,18 +197,6 @@ button[disabled]{
 .high{
     background-color: #A53733;
     color: #A53733;
-}
-.bad{
-    background-color: #a57233;
-    color: #a57233;
-}
-.bldfjlsdkfj{
-    background-color: #9da533;
-    color: #9da533;
-}
-.usch{
-    background-color: #70a533;
-    color: #70a533;
 }
 .good{
     background-color: var(--green);

@@ -12,6 +12,7 @@ const port = 3000
 let currentTemp = 0
 const tooDry = 50
 const wateringAmount = 150 //In ml
+const tankSize = 330 // ml
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -29,11 +30,16 @@ app.get('/', (req, res) => {
 app.post('/switchplant', (req,res) =>{
 	console.log(req.body)
 	logData(req.body.planttype, 'planttype')
+	res.send()
 })
 app.post('/waterplant', (req,res) =>{
 	console.log(req.body)
 	console.log('watering ' + parseInt(req.body.amount) + ' ml')
 	waterPlantManual(parseInt(req.body.amount))
+})
+app.post('/waterrefill', (req,res )=>{
+	logData(tankSize,'wateramount')
+	res.send()
 })
 
 app.get('/data', (req, res) => {
@@ -145,13 +151,24 @@ function handleCurrentSoilMoist(msg) {
  * @param {Number} amount Waters a plant the specified amount (ml)
  */
 function waterPlant(amount){
-	let seconds = (amount / 39) * 60
+	// Conversion from ml to seconds. Depends on pump voltage. 3.3V right now.
+	// 13.75 ml / minute
+	let data = JSON.parse(getData('data.json'))
+	data.wateramount = data.wateramount - amount
+	logData(data.wateramount,'wateramount')
+	let seconds = (amount / 13.75) * 60
 	
 	client.publish('moisture/soil/startpump', seconds.toString())
 	console.log('Skickar att ESP ska vattna!')
 }
 function waterPlantManual(amount){
-	let seconds = (amount / 39) * 60
+	// Conversion from ml to seconds. Depends on pump voltage. 3.3V right now.
+	// 13.75 ml / minute
+	let seconds = (amount / 13.75) * 60
+
+	let data = JSON.parse(getData('data.json'))
+	data.wateramount = data.wateramount - amount
+	logData(data.wateramount,'wateramount')
 	
 	client.publish('manualcontrol/startpump', seconds.toString())
 	console.log('En användare vattnar själv!!!')
@@ -181,7 +198,7 @@ function logData(msg, topic){
 	if(topic === 'lastwatered'){
 		save[topic] = Date.now()
 	}
-	else if(topic === 'planttype'){
+	else if(topic === 'planttype' || topic === 'wateramount'){
 		console.log(save[topic])
 		save[topic] = msg
 	}

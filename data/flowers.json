@@ -3,21 +3,21 @@
 		"daysdry": 0,
 		"wateramount": 60,
 		"airtemp": [10,25],
-		"light": [1500,3500],
+		"light": [1500,2000],
 		"airmoist": [20,100]
 	},
 	"fiddle_leaf_fig": {
 		"daysdry": 1,
 		"wateramount": 60,
 		"airtemp": [20,30],
-		"light": [3500, 4095],
+		"light": [2000, 4095],
 		"airmoist": [60,100]
 	},
 	"cacti": {
 		"daysdry": 7,
 		"wateramount": 70,
 		"airtemp": [10,25],
-		"light": [3500, 4095],
+		"light": [2000, 4095],
 		"airmoist": [40,80]
 	}
 }
