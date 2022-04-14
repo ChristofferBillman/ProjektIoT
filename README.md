@@ -1,5 +1,5 @@
+![Banner img](./public/readme_img.png)
 # Plant Watering IOT application!
-
 ## Description
 
 This was the final project in the course "Service development and design for the Internet of Things" @ Umeå University.
@@ -18,5 +18,3 @@ If the points in the todo-list are completed, we may persue any of the ideas bel
 -   Implement user naming of plants.
 -   Add support for several ESP-32 devices, monitoring several plants.
 -   Add a end-user system for adding new ESP-32 devices, i.e. without hard coding them in.
-
-![Banner img](./public/readme_img.png)
