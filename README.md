@@ -1,4 +1,4 @@
-# NAME PENDING
+# Plant Watering IOT application!
 
 ## Description
 
@@ -8,8 +8,8 @@ The goal of the project was to implement and create an IoT device. Our idea is a
 
 ## Todo list for MWP
 
--   View data in the "see more" modal.
--   Get the ESP-32 devices up and running with all sensors attatched and working.
+-   View data in the "see more" modal. ✅
+-   Get the ESP-32 devices up and running with all sensors attatched and working. ✅
 
 ## Ideas for further development
 
@@ -19,4 +19,4 @@ If the points in the todo-list are completed, we may persue any of the ideas bel
 -   Add support for several ESP-32 devices, monitoring several plants.
 -   Add a end-user system for adding new ESP-32 devices, i.e. without hard coding them in.
 
-![Banner img](./public/readme_img_dark.png)
+![Banner img](./public/readme_img.png)

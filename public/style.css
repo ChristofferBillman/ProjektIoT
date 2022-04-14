@@ -3,7 +3,8 @@
     --bg: #f2fffd;
     --gray: rgb(241, 241, 241);
     --black: rgb(60,60,60);
-    --info: rgb(55, 120, 173);
+    --info: rgb(60,60,60);
+    --info-old: rgb(55, 120, 173);
 }
 @font-face {
     font-family: 'Arvo';
